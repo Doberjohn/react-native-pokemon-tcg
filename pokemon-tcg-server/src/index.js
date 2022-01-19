@@ -69,13 +69,16 @@ app.post("/openPack", async (req, res) => {
         const cards = await pokemon.card.where({q: `set.id:${setId}`});
         const isRareHolo = rareHoloProbability >= Math.floor(Math.random() * 100) + 1;
 
-        let pack = {
-            commons: getXCards(cards, numberOfCommons, 'Common'),
-            uncommons: getXCards(cards, numberOfUncommons, 'Uncommon'),
-            rares: getXCards(cards, numberOfRares, isRareHolo ? 'Rare Holo' : 'Rare')
-        };
+        const commons = getXCards(cards, numberOfCommons, 'Common').map(card=>card.images);
+        const uncommons = getXCards(cards, numberOfUncommons, 'Uncommon').map(card=>card.images);
+        const rares = getXCards(cards, numberOfRares, isRareHolo ? 'Rare Holo' : 'Rare').map(card=> {
+            return {
+                images: card.images,
+                rarity: card.rarity
+            }
+        });
 
-        return res.send({message: 'Pack was successfully generated', pack});
+        return res.send({message: 'Pack was successfully generated', commons, uncommons, rares});
     } catch (e) {
         return res.status(422).send({error: "No matching sets were found"});
     }
@@ -108,7 +111,7 @@ const getXCards = (cardPool, numberOfCards, rarity)=> {
 
     const filteredCardPool = cardPool.data.filter(card=>card.rarity===rarity);
     for (let i=0; i<numberOfCards; i++) {
-        cards = [...cards, filteredCardPool[Math.floor(Math.random() * filteredCardPool.length) + 1]];
+        cards = [...cards, filteredCardPool[Math.floor(Math.random() * filteredCardPool.length)]];
     }
 
     return cards;
