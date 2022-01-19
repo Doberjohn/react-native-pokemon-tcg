@@ -1,3 +1,5 @@
+//@author John Fanidis
+
 const express = require('express');
 const bodyParser = require("body-parser");
 const pokemon = require('pokemontcgsdk');
