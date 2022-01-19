@@ -1,0 +1,18 @@
+{
+  "name": "pokemon-tcg-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15",
+    "pokemontcgsdk": "^2.0.0"
+  }
+}
